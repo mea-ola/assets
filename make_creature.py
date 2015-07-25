@@ -2,25 +2,26 @@ import bpy
 import sys
 import random
 
-# time<float>, eyes<bool>, hands<float>, feet<float>, ears<float>,
-# teeth1<bool>, teeth2<bool>, tongue<bool>, mouth<float>, smile<float>,
-# hair1<bool>, hair2<bool>, hair3<bool>, hair4<bool>,
+# time<float>, eyes<bool>, eyesScale<float>, hands<float>, feet<float>,
+# ears<float>, teeth1<bool>, teeth2<bool>, tongue<bool>, mouth<float>,
+# smile<float>, hair1<bool>, hair2<bool>, hair3<bool>, hair4<bool>,
 # bodyColorR,G,B<float>, hairColorR,G,B<float>, name<string>, scale<int>
 def creatureCreator(args):
     day_time(args[0])
     light_eyes() if args[1] else nocturnal_eyes()
-    finger_hands(args[2])
-    flat_feet(args[3])
-    pointed_ears(args[4])
-    surround_teeth(args[5])
-    front_teeth(args[6])
-    tongue(args[7])
-    mouth(args[8])
-    smile(args[9])
-    hair([args[10],args[11],args[12],args[13]])
-    body_color(args[14],args[15],args[16])
-    hair_color(args[17],args[18],args[19])
-    render_scene(args[20], args[21])
+    eye_size(args[2])
+    finger_hands(args[3])
+    flat_feet(args[4])
+    pointed_ears(args[5])
+    surround_teeth(args[6])
+    front_teeth(args[7])
+    tongue(args[8])
+    mouth(args[9])
+    smile(args[10])
+    hair([args[11],args[12],args[13],args[14]])
+    body_color(args[15],args[16],args[17])
+    hair_color(args[18],args[19],args[20])
+    render_scene(args[21], args[22])
 
 # day sequence
 # night = 1, day = 0
@@ -36,6 +37,10 @@ def nocturnal_eyes():
 def light_eyes():
     bpy.data.materials['eye_color'].diffuse_color = (1,1,1)
     bpy.data.materials['eye_pupil'].diffuse_color = (0,0,0)
+
+def eye_size(scale):
+    bpy.data.objects['Armature'].pose.bones["pupil-control"].scale[0] = scale
+    bpy.data.objects['Armature'].pose.bones["pupil-control"].scale[1] = scale
 
 # change hands and feet
 def finger_hands(fingerRange):
@@ -84,7 +89,9 @@ def body_color(r,g,b):
 def hair_color(r,g,b):
     bpy.data.materials['hair'].diffuse_ramp.elements[1].color = (r,g,b,1)
 
-def render_scene(filepath,scale=1):
+def render_scene(filepath,scale=3):
+    print("scale : " + str(scale))
+    print("name : " + str(filepath))
     bpy.data.scenes['creature'].node_tree.nodes['Transform'].inputs[4].default_value = int(scale)
     bpy.context.scene.render.resolution_percentage = 100 * int(scale)
     bpy.data.cameras['Camera'].ortho_scale = 3.3 * int(scale)
@@ -102,6 +109,7 @@ def main():
             config = [
                 0,
                 random.random() > 0.5,
+                random.random(),
                 random.random(),
                 random.random(),
                 random.random(),
@@ -127,6 +135,7 @@ def main():
         # else go through the params and put them in the right type
         config = argv[argv.index("--")+1:]
         for i in range(len(config)):
+            print(str(i) + " : " + str(config[i]))
             if config[i] == "True":
                 config[i] = True
             elif config[i] == "False":
@@ -136,6 +145,7 @@ def main():
                     config[i] = float(config[i])
                 except ValueError:
                     pass
+            print(str(config[i]))
         print(config)
         creatureCreator(config)
 
