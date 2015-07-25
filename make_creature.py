@@ -18,9 +18,9 @@ def creatureCreator(args):
     mouth(args[8])
     smile(args[9])
     hair([args[10],args[11],args[12],args[13]])
-    body_color(args[14])
-    hair_color(args[15])
-    render_scene(args[16])
+    body_color(args[14],args[15],args[16])
+    hair_color(args[17],args[18],args[19])
+    render_scene(args[20])
 
 # day sequence
 # night = 1, day = 0
@@ -77,15 +77,15 @@ def hair(hairArray):
     bpy.data.objects['body'].modifiers["long"].show_render = hairArray[3]
 
 # body color, takes a 4 tuple (rgba)
-def body_color(color):
-    bpy.data.materials['body'].diffuse_ramp.elements[1].color = color
+def body_color(r,g,b):
+    bpy.data.materials['body'].diffuse_ramp.elements[1].color = (r,g,b,1)
 
 # hair color, takes a 4 tuple (rgba)
-def hair_color(color):
-    bpy.data.materials['hair'].diffuse_ramp.elements[1].color = color
+def hair_color(r,g,b):
+    bpy.data.materials['hair'].diffuse_ramp.elements[1].color = (r,g,b,1)
 
 def render_scene(filepath):
-    bpy.context.scene.render.filepath = "//images/" + filepath
+    bpy.context.scene.render.filepath = "//images/" + str(filepath)
     bpy.ops.render.render(write_still=True)
 
 def main():
@@ -109,14 +109,14 @@ def main():
             random.random() > 0.5,
             random.random() > 0.5,
 
-            (random.random(),random.random(),random.random(),1),
-            (random.random(),random.random(),random.random(),1),
+            random.random(),random.random(),random.random(),
+            random.random(),random.random(),random.random(),
             "rando" + str(random.random())
         ]
         creatureCreator(config)
     else:
         config = argv[argv.index("--")+1:]
-        for i in config:
+        for i in range(len(config)):
             if config[i] == "True":
                 config[i] = True
             elif config[i] == "False":
