@@ -91,6 +91,7 @@ def render_scene(filepath):
 def main():
     argv = sys.argv
     if "--random" in argv:
+        # if given random, just come up with random stuff
         config = [
             0,
             random.random() > 0.5,
@@ -113,18 +114,22 @@ def main():
             random.random(),random.random(),random.random(),
             "rando" + str(random.random())
         ]
+        print(config)
         creatureCreator(config)
     else:
+        # else go through the params and put them in the right type
         config = argv[argv.index("--")+1:]
         for i in range(len(config)):
             if config[i] == "True":
                 config[i] = True
             elif config[i] == "False":
                 config[i] = False
-            try:
-                config[i] = float(config[i])
-            except ValueError:
-                pass
+            else:
+                try:
+                    config[i] = float(config[i])
+                except ValueError:
+                    pass
+        print(config)
         creatureCreator(config)
 
 if __name__ == "__main__":
