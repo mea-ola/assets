@@ -5,7 +5,7 @@ import random
 # time<float>, eyes<bool>, hands<float>, feet<float>, ears<float>,
 # teeth1<bool>, teeth2<bool>, tongue<bool>, mouth<float>, smile<float>,
 # hair1<bool>, hair2<bool>, hair3<bool>, hair4<bool>,
-# bodyColor<color>, hairColor<color>
+# bodyColorR,G,B<float>, hairColorR,G,B<float>, name<string>, scale<int>
 def creatureCreator(args):
     day_time(args[0])
     light_eyes() if args[1] else nocturnal_eyes()
@@ -20,7 +20,7 @@ def creatureCreator(args):
     hair([args[10],args[11],args[12],args[13]])
     body_color(args[14],args[15],args[16])
     hair_color(args[17],args[18],args[19])
-    render_scene(args[20])
+    render_scene(args[20], args[21])
 
 # day sequence
 # night = 1, day = 0
@@ -84,7 +84,10 @@ def body_color(r,g,b):
 def hair_color(r,g,b):
     bpy.data.materials['hair'].diffuse_ramp.elements[1].color = (r,g,b,1)
 
-def render_scene(filepath):
+def render_scene(filepath,scale=1):
+    bpy.data.scenes['creature'].node_tree.nodes['Transform'].inputs[4].default_value = int(scale)
+    bpy.context.scene.render.resolution_percentage = 100 * int(scale)
+    bpy.data.cameras['Camera'].ortho_scale = 3.3 * int(scale)
     bpy.context.scene.render.filepath = "//images/" + str(filepath)
     bpy.ops.render.render(write_still=True)
 
@@ -92,30 +95,34 @@ def main():
     argv = sys.argv
     if "--random" in argv:
         # if given random, just come up with random stuff
-        config = [
-            0,
-            random.random() > 0.5,
-            random.random(),
-            random.random(),
-            random.random(),
+        args = argv[argv.index("--random")+1:]
+        scale = args[0]
+        repeat = args[1]
+        for creature in range(int(repeat)):
+            config = [
+                0,
+                random.random() > 0.5,
+                random.random(),
+                random.random(),
+                random.random(),
 
-            random.random() > 0.5,
-            random.random() > 0.5,
-            random.random() > 0.5,
-            random.random(),
-            random.random(),
+                random.random() > 0.5,
+                random.random() > 0.5,
+                random.random() > 0.5,
+                random.random(),
+                random.random(),
 
-            random.random() > 0.5,
-            random.random() > 0.5,
-            random.random() > 0.5,
-            random.random() > 0.5,
+                random.random() > 0.5,
+                random.random() > 0.5,
+                random.random() > 0.5,
+                random.random() > 0.5,
 
-            random.random(),random.random(),random.random(),
-            random.random(),random.random(),random.random(),
-            "rando" + str(random.random())
-        ]
-        print(config)
-        creatureCreator(config)
+                random.random(),random.random(),random.random(),
+                random.random(),random.random(),random.random(),
+                "rando" + str(random.random()), scale
+            ]
+            print(config)
+            creatureCreator(config)
     else:
         # else go through the params and put them in the right type
         config = argv[argv.index("--")+1:]

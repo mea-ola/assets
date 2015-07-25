@@ -3,12 +3,12 @@ Repo for assets
 
 Should be run from the command line
 
-`<blender executable>  -b creatureGenerator.blend -P make_creature.py -- --random`
+`<blender executable>  -b creatureGenerator.blend -P make_creature.py -- --random <scale> <number of creatures>`
 
 params if you wanna do it manually (like a loser)
 
 ```
-time<float> (used only if you want the lighting to match a darker setting, keep at zero otherwise, 
+time<float> (used only if you want the lighting to match a darker setting, keep at zero otherwise,
 
 eyes<bool> True for normal eyes (black pupils), False for nocturnal eyes (white pupils on black),
 hands<float> 0 for sphere hands, as you go up to 1 you get fingers,
@@ -35,11 +35,12 @@ hairColorGreen<float> component of hair green (0-1),
 hairColorBlue<float> component of hair blue (0-1),
 
 name<string>
+scale<int> you can scale in integer increments
 ```
 
 so for a completely blank one you do a little this:
 
-`blender -b creatureGenerator.blend -P make_creature.py -- 0 True 0 0 0 False False False 0 0 False False False False 0 0 0 1 0 0 0 1 'blank'`
+`blender -b creatureGenerator.blend -P make_creature.py -- 0 True 0 0 0 False False False 0 0 False False False False 0 0 0 1 0 0 0 1 'blank' 1`
 
 and you get this guy :D
 
