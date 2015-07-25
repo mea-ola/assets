@@ -7,7 +7,35 @@ Should be run from the command line
 
 params if you wanna do it manually (like a loser)
 
-`time<float>, eyes<bool>, hands<float>, feet<float>, ears<float>, teeth1<bool>, teeth2<bool>, tongue<bool>, mouth<float>, smile<float>, hair1<bool>, hair2<bool>, hair3<bool>, hair4<bool>, bodyColorRed<float>, bodyColorGreen<float>, bodyColorBlue<float>, hairColorRed<float>, hairColorGreen<float>, hairColorBlue<float>, name<string>`
+```
+time<float> (used only if you want the lighting to match a darker setting, keep at zero otherwise, 
+
+eyes<bool> True for normal eyes (black pupils), False for nocturnal eyes (white pupils on black),
+hands<float> 0 for sphere hands, as you go up to 1 you get fingers,
+feet<float> 0 for sphere feet, as you go up to 1 you get flat feet,
+ears<float> 0 for round ears, as you go up to 1 you get pointed ears,
+
+teeth1<bool> True for teeth (except for front teeth),
+teeth2<bool> True for front teeth,
+tongue<bool> True for a tongue,
+mouth<float> how open the mouth is- 0 for zipped shut, 1 for wide open,
+smile<float> 0 for frown, 1 for smile,
+
+hair1<bool> adds mohawk hair (can stack with other hair),
+hair2<bool> adds messy hair (can stack with other hair),
+hair3<bool> adds normal hair (can stack with other hair),
+hair4<bool> adds long hair (can stack with other hair),
+
+bodyColorRed<float> component of body red (0-1),
+bodyColorGreen<float> component of body green (0-1),
+bodyColorBlue<float> component of body blue (0-1),
+
+hairColorRed<float> component of hair red (0-1),
+hairColorGreen<float> component of hair green (0-1),
+hairColorBlue<float> component of hair blue (0-1),
+
+name<string>
+```
 
 so for a completely blank one you do a little this:
 
