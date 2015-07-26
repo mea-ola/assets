@@ -68,7 +68,7 @@ def tongue(tongueOut=False):
 
 # 0 closed, 1 open
 def mouth(openness=0):
-    bpy.data.shape_keys["Key.006"].key_blocks["open"].value = -1.2 + 2.2 * openness
+    bpy.data.objects['body']["mouth_open"] = -1.2 + 2.2 * openness
 
 # 0 sad, 1 happy
 def smile(happyness=0):
