@@ -1,6 +1,7 @@
 import bpy
 import sys
 import random
+import time
 
 # time<float>, eyes<bool>, eyesScale<float>, hands<float>, feet<float>,
 # ears<float>, teeth1<bool>, teeth2<bool>, tongue<bool>, mouth<float>,
@@ -94,7 +95,7 @@ def render_scene(filepath,scale=3):
     print("name : " + str(filepath))
     bpy.data.scenes['creature'].node_tree.nodes['Transform'].inputs[4].default_value = int(scale)
     bpy.context.scene.render.resolution_percentage = 100 * int(scale)
-    bpy.data.cameras['Camera'].ortho_scale = 3.3 * int(scale)
+    bpy.data.cameras['Camera'].ortho_scale = 3.6 * int(scale)
     bpy.context.scene.render.filepath = "//images/" + str(filepath)
     bpy.ops.render.render(write_still=True)
 
@@ -127,7 +128,7 @@ def main():
 
                 random.random(),random.random(),random.random(),
                 random.random(),random.random(),random.random(),
-                "rando" + str(random.random()), scale
+                "rando" + str(time.time()), scale
             ]
             print(config)
             creatureCreator(config)
