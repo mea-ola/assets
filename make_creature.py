@@ -1,7 +1,16 @@
 import bpy
+from mathutils import Euler
 import sys
 import random
 import time
+
+NORMAL_ANGLE = (0.26240038871765137, 0.09180232882499695, 4.485085964202881)
+DEG_0_ANGLE = (0.5142398476600647, 0.013469358906149864, -2.178062915802002)
+DEG_45_ANGLE = (0.5142397880554199, 0.013469358906149864, -2.9634644985198975)
+DEG_90_ANGLE = (0.5142398476600647, 0.013469359837472439, -3.7488629817962646)
+DEG_135_ANGLE = (0.5142397880554199, 0.013469361700117588, -4.534261226654053)
+DEG_180_ANGLE = (0.5142398476600647, 0.013469361700117588, -5.31965970993042)
+angles = [DEG_0_ANGLE,DEG_45_ANGLE,DEG_90_ANGLE,DEG_135_ANGLE,DEG_180_ANGLE]
 
 # time<float>, eyes<bool>, eyesScale<float>, hands<float>, feet<float>,
 # ears<float>, teeth1<bool>, teeth2<bool>, tongue<bool>, mouth<float>,
@@ -22,7 +31,12 @@ def creatureCreator(args):
     hair([args[11],args[12],args[13],args[14]])
     body_color(args[15],args[16],args[17])
     hair_color(args[18],args[19],args[20])
-    render_scene(args[21], args[22])
+
+    render_creature(args[21], args[22]) # normal angle
+    for i in range(len(angles)):
+        render_creature(args[21] +"__"+ str(i), args[22], angles[i])
+    render_creature_idle(args[21], args[22])
+    render_egg_hatching(args[21], args[22])
 
 # day sequence
 # night = 1, day = 0
@@ -90,14 +104,47 @@ def body_color(r,g,b):
 def hair_color(r,g,b):
     bpy.data.materials['hair'].diffuse_ramp.elements[1].color = (r,g,b,1)
 
-def render_scene(filepath,scale=3):
-    print("scale : " + str(scale))
-    print("name : " + str(filepath))
-    bpy.data.scenes['creature'].node_tree.nodes['Transform'].inputs[4].default_value = int(scale)
-    bpy.context.scene.render.resolution_percentage = 100 * int(scale)
-    bpy.data.cameras['Camera'].ortho_scale = 3.6 * int(scale)
+def render_creature(filepath,scale=3,angle=NORMAL_ANGLE):
+    change_angle(angle)
+    bpy.context.scene.frame_current = 0
+
+    visible_layers([0,10]) # layers for creature
+    bpy.data.scenes['creature'].render.image_settings.file_format = 'PNG' # one image
+    bpy.data.scenes['creature'].render.image_settings.color_mode = 'RGBA' # use alpha layer
+    bpy.data.cameras["Camera"]["scale"] = int(scale)
     bpy.context.scene.render.filepath = "//images/" + str(filepath)
     bpy.ops.render.render(write_still=True)
+
+def render_creature_idle(filepath,scale=3,angle=NORMAL_ANGLE):
+    change_angle(angle)
+    bpy.context.scene.frame_current = 0
+    bpy.context.scene.frame_end = 48
+
+    visible_layers([0,10]) # layers for creature
+    bpy.data.scenes['creature'].render.image_settings.file_format = 'H264'
+    bpy.data.cameras["Camera"]["scale"] = int(scale)
+    bpy.context.scene.render.filepath = "//images/" + str(filepath)
+    bpy.ops.render.render(animation=True)
+
+def render_egg_hatching(filepath,scale=3):
+    change_angle(NORMAL_ANGLE)
+    bpy.context.scene.frame_current = 0
+    bpy.context.scene.frame_end = 500
+
+    visible_layers([14,10]) # layers for creature
+    bpy.data.scenes['creature'].render.image_settings.file_format = 'H264'
+    bpy.data.cameras["Camera"]["scale"] = int(scale)
+    bpy.context.scene.render.filepath = "//images/" + str(filepath)
+    bpy.ops.render.render(animation=True)
+
+def visible_layers(vis):
+    layers = []
+    for i in range(len(bpy.context.scene.layers)):
+        layers.append(True if i in vis else False)
+    bpy.context.scene.layers = layers
+
+def change_angle(angle):
+    bpy.data.objects['camera-control'].rotation_euler = Euler(angle,'XYZ')
 
 def main():
     argv = sys.argv
