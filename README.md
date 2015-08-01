@@ -3,7 +3,12 @@ Repo for assets
 
 Should be run from the command line
 
-`<blender executable> -b creatureGenerator.blend -P make_creature.py -- --random <scale> <number of creatures>`
+`<blender executable> -b creatureGenerator.blend -y -P make_creature.py -- --random <scale> <number of creatures>`
+
+
+for example: 
+`blender -b creatureGenerator.blend -y -P make_creature.py -- --random 1 1`
+
 
 params if you wanna do it manually (like a loser)
 
