@@ -51,3 +51,6 @@ so for a completely blank one you do a little this:
 and you get this guy :D
 
 ![blank slate](http://i.imgur.com/7JfLhcX.png "This guy")
+
+#### Docker usage
+Theres a make file for convenience, this builds a base debian container with blender and nginx, run the blender script and hosts the images output with directory listing.
