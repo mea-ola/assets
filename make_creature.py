@@ -32,13 +32,16 @@ def creatureCreator(args):
     body_color(args[15],args[16],args[17])
     hair_color(args[18],args[19],args[20])
 
-    render_creature(args[21], args[22]) # normal angle
-    render_egg(args[21] +"__egg",args[22])
+    render_egg(args[21] + "/egg/egg", args[22])
+    render_egg_idle(args[21] + "/egg_idle/", args[22])
+    render_egg_hatching(args[21] + "/egg_hatching/", args[22])
+
+    render_creature(args[21] + "/app_img/creature", args[22]) # normal angle
+    render_creature_idle(args[21] + "/app_idle/", args[22])
+
     for i in range(len(angles)):
-        render_creature(args[21] +"__"+ str(i), args[22], angles[i])
-        render_walk_cycle(args[21] +"__"+ str(i), args[22], angles[i])
-    render_creature_idle(args[21], args[22])
-    render_egg_hatching(args[21], args[22])
+        render_creature_idle(args[21] + "/idle/" + str(i) + "/", args[22], angles[i])
+        render_walk_cycle(args[21] + "/walk_cycle/" + str(i) +"/", args[22], angles[i])
 
 # day sequence
 # night = 1, day = 0
@@ -135,7 +138,8 @@ def render_creature_idle(filepath,scale=3,angle=NORMAL_ANGLE):
     bpy.context.scene.frame_end = 48
 
     visible_layers([0,10]) # layers for creature
-    bpy.data.scenes['creature'].render.image_settings.file_format = 'H264'
+    bpy.data.scenes['creature'].render.image_settings.file_format = 'PNG' # one image
+    bpy.data.scenes['creature'].render.image_settings.color_mode = 'RGBA' # use alpha layer
     bpy.data.cameras["Camera"]["scale"] = int(scale)
     bpy.context.scene.render.filepath = "//images/" + str(filepath)
     bpy.ops.render.render(animation=True)
@@ -147,7 +151,21 @@ def render_walk_cycle(filepath,scale=3,angle=NORMAL_ANGLE):
     bpy.context.scene.frame_end = 95
 
     visible_layers([0,10]) # layers for creature
-    bpy.data.scenes['creature'].render.image_settings.file_format = 'H264'
+    bpy.data.scenes['creature'].render.image_settings.file_format = 'PNG' # one image
+    bpy.data.scenes['creature'].render.image_settings.color_mode = 'RGBA' # use alpha layer
+    bpy.data.cameras["Camera"]["scale"] = int(scale)
+    bpy.context.scene.render.filepath = "//images/" + str(filepath)
+    bpy.ops.render.render(animation=True)
+
+def render_egg_idle(filepath,scale=3):
+    change_angle(NORMAL_ANGLE)
+    bpy.context.scene.frame_start = 0
+    bpy.context.scene.frame_current = 0
+    bpy.context.scene.frame_end = 48
+
+    visible_layers([14,10]) # layers for creature
+    bpy.data.scenes['creature'].render.image_settings.file_format = 'PNG' # one image
+    bpy.data.scenes['creature'].render.image_settings.color_mode = 'RGBA' # use alpha layer
     bpy.data.cameras["Camera"]["scale"] = int(scale)
     bpy.context.scene.render.filepath = "//images/" + str(filepath)
     bpy.ops.render.render(animation=True)
@@ -159,7 +177,8 @@ def render_egg_hatching(filepath,scale=3):
     bpy.context.scene.frame_end = 500
 
     visible_layers([14,10]) # layers for creature
-    bpy.data.scenes['creature'].render.image_settings.file_format = 'H264'
+    bpy.data.scenes['creature'].render.image_settings.file_format = 'PNG' # one image
+    bpy.data.scenes['creature'].render.image_settings.color_mode = 'RGBA' # use alpha layer
     bpy.data.cameras["Camera"]["scale"] = int(scale)
     bpy.context.scene.render.filepath = "//images/" + str(filepath)
     bpy.ops.render.render(animation=True)
