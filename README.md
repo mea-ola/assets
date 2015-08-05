@@ -3,11 +3,11 @@ Repo for assets
 
 Should be run from the command line
 
-`<blender executable> -b creatureGenerator.blend -y -P make_creature.py -- --random <scale> <number of creatures>`
+`<blender executable> -b creatureGenerator.blend -y -P make_creature.py -- --random <number of creatures>`
 
 
-for example: 
-`blender -b creatureGenerator.blend -y -P make_creature.py -- --random 1 1`
+for example:
+`blender -b creatureGenerator.blend -y -P make_creature.py -- --random 1`
 
 
 params if you wanna do it manually (like a loser)
@@ -41,12 +41,11 @@ hairColorGreen<float> component of hair green (0-1),
 hairColorBlue<float> component of hair blue (0-1),
 
 name<string>
-scale<int> you can scale in integer increments
 ```
 
 so for a completely blank one you do a little this:
 
-`blender -b creatureGenerator.blend -P make_creature.py -- 0 True 0.5 0 0 0 False False False 0 0 False False False False 0 0 0 0 0 0 'blank' 1`
+`blender -b creatureGenerator.blend -P make_creature.py -- 0 True 0.5 0 0 0 False False False 0 0 False False False False 0 0 0 0 0 0 'blank'`
 
 and you get this guy :D
 
