@@ -11,7 +11,7 @@ for example:
 
 
 params if you wanna do it manually (like a loser)
-
+NOTE UPDATE: all of these now just take a float, 0 being false, 1 being true if it's a boolean
 ```
 
 eyes<bool> True for normal eyes (black pupils), False for nocturnal eyes (white pupils on black),
@@ -48,9 +48,19 @@ so for a completely blank one you do a little this:
 
 and you get this guy :D
 
-![blank slate](http://i.imgur.com/7JfLhcX.png "This guy")
+
+![blank slate](http://i.imgur.com/7JfLhcX.png)
 
 along with 3 sprite sheets
-`./images/blank/app.png`
-`./images/blank/box.png`
-`./images/blank/garden.png`
+
+## `./images/blank/app.png`
+
+![blank app sprite](http://i.imgur.com/amW7J6M.png)
+
+## `./images/blank/box.png`
+
+![blank box sprite](http://i.imgur.com/Ech4VPT.png)
+
+## `./images/blank/garden.png`
+
+![blank garden sprite](http://i.imgur.com/B61Un1A.png)
