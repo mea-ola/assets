@@ -55,7 +55,7 @@ along with 3 sprite sheets
 
 ## `./images/blank/app.png`
 
-![blank app sprite](http://i.imgur.com/amW7J6M.png)
+![blank app sprite](http://i.imgur.com/Jo7r6LZ.png)
 
 ## `./images/blank/box.png`
 

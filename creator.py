@@ -70,7 +70,7 @@ def render_egg_app(filepath):
     render_scene(filepath, [14,10], 1, NORMAL_ANGLE)
 
 def render_creature_app(filepath, angle=NORMAL_ANGLE):
-    time_frame(0,48)
+    time_frame(0,46)
     #two renders for each rotation
     render_scene(filepath, [0,10], 1, NORMAL_ANGLE, 1, -8)
     render_scene(filepath, [0,10], 1, NORMAL_ANGLE, 1, 8)
