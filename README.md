@@ -3,17 +3,16 @@ Repo for assets
 
 Should be run from the command line
 
-`<blender executable> -b creatureGenerator.blend -y -P make_creature.py -- --random <number of creatures>`
+`$<blender executable> -b creatureGenerator.blend -y -P creator.py -- --random <number of creatures>`
 
 
 for example:
-`blender -b creatureGenerator.blend -y -P make_creature.py -- --random 1`
+`$ blender -b creatureGenerator.blend -y -P creator.py -- --random 1`
 
 
 params if you wanna do it manually (like a loser)
 
 ```
-time<float> (used only if you want the lighting to match a darker setting, keep at zero otherwise,
 
 eyes<bool> True for normal eyes (black pupils), False for nocturnal eyes (white pupils on black),
 eyesScale<float> 1 has big eyes (pupils), 0 has tiny ones,
@@ -45,8 +44,13 @@ name<string>
 
 so for a completely blank one you do a little this:
 
-`blender -b creatureGenerator.blend -P make_creature.py -- 0 True 0.5 0 0 0 False False False 0 0 False False False False 0 0 0 0 0 0 'blank'`
+`$ blender -b creatureGenerator.blend -y -P creator.py -- 0 0.5 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 'blank'`
 
 and you get this guy :D
 
 ![blank slate](http://i.imgur.com/7JfLhcX.png "This guy")
+
+along with 3 sprite sheets
+`./images/blank/app.png`
+`./images/blank/box.png`
+`./images/blank/garden.png`
