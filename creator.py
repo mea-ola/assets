@@ -19,21 +19,7 @@ angles = [DEG_0_ANGLE,DEG_90_ANGLE,DEG_180_ANGLE,DEG_270_ANGLE]
 # ears<float>, teeth1<bool>, teeth2<bool>, tongue<bool>, mouth<float>,
 # smile<float>, hair1<bool>, hair2<bool>, hair3<bool>, hair4<bool>,
 # bodyColorR,G,B<float>, hairColorR,G,B<float>, name<string>
-def creature_creator(args, name):
-    print(args)
-    eyes_type(args.pop(0))
-    eye_size(args.pop(0))
-    finger_hands(args.pop(0))
-    flat_feet(args.pop(0))
-    pointed_ears(args.pop(0))
-    surround_teeth(args.pop(0))
-    front_teeth(args.pop(0))
-    tongue(args.pop(0))
-    mouth(args.pop(0))
-    smile(args.pop(0))
-    hair([args.pop(0),args.pop(0),args.pop(0),args.pop(0)])
-    body_color(args.pop(0),args.pop(0),args.pop(0))
-    hair_color(args.pop(0),args.pop(0),args.pop(0))
+def creature_creator(name):
 
     render_egg_box(name + "/box/egg")
     render_egg_garden(name + "/garden/egg")
@@ -106,16 +92,13 @@ def change_angle(angle):
 def main():
     argv = sys.argv
     if "--random" in argv:
-        # if given random, just come up with random stuff
-        args = argv[argv.index("--random")+1:]
-        repeat = args[0]
-        for creature in range(int(repeat)):
-            config = [random.random() for i in range(20)]
-            print(config)
-            creature_creator(config,"rando" + str(time.time()))
+        name = "rando" + str(time.time())
+        modify_creature_rand(name)
+        creature_creator(name)
     else:
         # last param is name, others get thrown in config
-        creature_creator( argv[argv.index("--")+1:-1] , argv[-1] )
+        modify_creature(argv[-2])
+        creature_creator(argv[-1])
 
 if __name__ == "__main__":
     main()
