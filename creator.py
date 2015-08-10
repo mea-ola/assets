@@ -92,9 +92,10 @@ def change_angle(angle):
 def main():
     argv = sys.argv
     if "--random" in argv:
-        name = "rando" + str(time.time())
-        modify_creature_rand(name)
-        creature_creator(name)
+        for i in range(int(argv[-1])):
+            name = "rando" + str(time.time())
+            modify_creature_rand(name)
+            creature_creator(name)
     else:
         # last param is name, others get thrown in config
         modify_creature(argv[-2])
