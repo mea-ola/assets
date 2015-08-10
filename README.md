@@ -46,7 +46,6 @@ _YOU SUCK!_ But because I love you, you can just load a json file (like the one 
 
 and you get this guy :D
 
-
 ![blank slate](http://i.imgur.com/7JfLhcX.png)
 
 along with 3 sprite sheets
@@ -62,3 +61,6 @@ along with 3 sprite sheets
 ## `./images/blank/garden.png`
 
 ![blank garden sprite](http://i.imgur.com/B61Un1A.png)
+
+# Docker usage
+Theres a make file for convenience, this builds a base debian container with blender and nginx, run the blender script and hosts the images output with directory listing.
