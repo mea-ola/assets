@@ -108,10 +108,11 @@ from flask import Flask
 app = Flask(__name__)
 app.debug = True
 
-if __name__ == "__main__":
-  # app.run(host="0.0.0.0") # use host param for external visiblity
-  make_random()
 
 @app.route("/create_random")
 def random_creature():
   return make_random()
+
+if __name__ == "__main__":
+  app.run(host="0.0.0.0") # use host param for external visiblity
+  # make_random()
