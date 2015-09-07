@@ -28,8 +28,8 @@ def modify_creature_rand(name):
     for func_name in functions:
         creature_hash[func_name] = random.random()
         globals()[func_name](creature_hash[func_name])
-    if not os.path.exists(directory):
-        os.makedirs(directory)
+    if not os.path.exists('images/'):
+        os.makedirs('images/')
     _write_json(creature_hash, 'images/' + name + '.json')
 
 # eye colors
