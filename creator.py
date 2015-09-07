@@ -93,15 +93,25 @@ def main():
     argv = sys.argv
     if "--random" in argv:
         for i in range(int(argv[-1])):
-            name = "rando" + str(time.time())
-            modify_creature_rand(name)
-            creature_creator(name)
+            make_random()
     else:
         # last param is name, others get thrown in config
         modify_creature(argv[-2])
         creature_creator(argv[-1])
 
+def make_random():
+    name = "rando" + str(time.time())
+    modify_creature_rand(name)
+    creature_creator(name)
+
+from flask import Flask
+app = Flask(__name__)
+app.debug = True
+
 if __name__ == "__main__":
-    main()
-else:
-    print(__name__)
+  # app.run(host="0.0.0.0") # use host param for external visiblity
+  make_random()
+
+@app.route("/create_random")
+def random_creature():
+  return make_random()

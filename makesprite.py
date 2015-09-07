@@ -1,19 +1,27 @@
-from subprocess import call
 import shutil
+import glob
+from PIL import Image
 
-################# TILE MAKING ################
-# requires imagemagick installed
 def tile_app(name):
-    call(["montage", "./images/"+name+"/app/*.png", "-tile", "8x",
-    "-geometry", "192x192", "-background", "none", "images/"+name+"/app.png"])
-    shutil.rmtree("images/"+name+"/app")
+    # image size for app is 192 x 192
+    tile_set(name,"app",192,192)
 
 def tile_garden(name):
-    call(["montage", "./images/"+name+"/garden/*.png", "-tile", "8x",
-    "-geometry", "96x96", "-background", "none", "images/"+name+"/garden.png"])
-    shutil.rmtree("images/"+name+"/garden")
+    # image size for app is 96 x 96
+    tile_set(name,"garden",96,96)
 
 def tile_box(name):
-    call(["montage", "./images/"+name+"/box/*.png", "-tile", "2x",
-    "-geometry", "64x64", "-background", "none", "images/"+name+"/box.png"])
-    shutil.rmtree("images/"+name+"/box")
+    # image size for app is 64 x 64
+    tile_set(name,"box",64,64)
+
+def tile_set(name,folder,img_width,img_height):
+    # image size for app is 64 x 64
+    images = [Image.open(img_path,'r') for img_path in glob.glob("./images/"+name+"/"+folder+"/*.png")]
+    width = len(images) * img_width
+    final_image = Image.new('RGBA', (width, img_height), (0,0,0,0))
+    offset = (0,0)
+    for img in images:
+        final_image.paste(img,offset)
+        offset = (offset[0]+img_width, 0)
+    final_image.save("images/"+name+"/"+folder+".png")
+    shutil.rmtree("images/"+name+"/"+folder)

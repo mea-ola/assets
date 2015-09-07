@@ -2,6 +2,7 @@ import bpy
 import inspect
 import json
 import random
+import os
 
 def _to_bool(value):
     return float(value) > 0.5
@@ -27,6 +28,8 @@ def modify_creature_rand(name):
     for func_name in functions:
         creature_hash[func_name] = random.random()
         globals()[func_name](creature_hash[func_name])
+    if not os.path.exists(directory):
+        os.makedirs(directory)
     _write_json(creature_hash, 'images/' + name + '.json')
 
 # eye colors
