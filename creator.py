@@ -8,6 +8,9 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__) ))
 from modifiers import *
 from makesprite import *
 
+from flask import Flask, send_file
+app = Flask(__name__, static_url_path='')
+
 NORMAL_ANGLE = (-0.40227848291397095, 0.16484859585762024, 6.682433605194092)
 DEG_0_ANGLE = (-0.7853982448577881, -0.0, 0.0)
 DEG_90_ANGLE = (-0.7853982448577881, -0.0, 1.570796251296997)
@@ -103,16 +106,19 @@ def make_random():
     name = "rando" + str(time.time())
     modify_creature_rand(name)
     creature_creator(name)
+    return name
 
-from flask import Flask
-app = Flask(__name__)
-app.debug = True
+####################### APP #########################
 
-
-@app.route("/create_random")
+@app.route("/new")
 def random_creature():
-  return make_random()
+    name = make_random()
+    return send_file('images/'+name+'/app.png', mimetype="image/png")
+
+@app.route("/old")
+def static_creature():
+    return send_file('images/rando1441626731.2519984/app.png', mimetype="image/png")
 
 if __name__ == "__main__":
-  app.run(host="0.0.0.0") # use host param for external visiblity
-  # make_random()
+    app.run(threaded=True, host="0.0.0.0") # use host param for external visiblity
+
