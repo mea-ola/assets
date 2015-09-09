@@ -1,6 +1,5 @@
 import bpy
 from mathutils import Euler
-import random
 import time
 import os
 import sys
@@ -8,7 +7,7 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__) ))
 from modifiers import *
 from makesprite import *
 
-from flask import Flask, send_file
+from flask import Flask, send_file, request
 app = Flask(__name__, static_url_path='')
 
 NORMAL_ANGLE = (-0.40227848291397095, 0.16484859585762024, 6.682433605194092)
@@ -92,16 +91,7 @@ def change_angle(angle):
     bpy.data.objects['camera-control'].rotation_euler = Euler(angle,'XYZ')
 
 ######################## MAIN #######################
-def main():
-    argv = sys.argv
-    if "--random" in argv:
-        for i in range(int(argv[-1])):
-            make_random()
-    else:
-        # last param is name, others get thrown in config
-        modify_creature(argv[-2])
-        creature_creator(argv[-1])
-
+## makes a random creature. returns name ##
 def make_random():
     name = "rando" + str(time.time())
     modify_creature_rand(name)
@@ -110,14 +100,36 @@ def make_random():
 
 ####################### APP #########################
 
+## make a new random creature through flask ##
 @app.route("/new")
 def send_random_creature():
     name = make_random()
-    return send_file('images/'+name+'/app.png', mimetype="image/png")
+    return send_creature(name)
 
-@app.route("/creature/<creature>")
-def send_creature(creature):
+## retrieve a creature through flask ##
+@app.route("/app/<creature>")
+def send_creature_app(creature):
     return send_file('images/'+creature+'/app.png', mimetype="image/png")
 
+## retrieve a creature through flask ##
+@app.route("/garden/<creature>")
+def send_creature_garden(creature):
+    return send_file('images/'+creature+'/garden.png', mimetype="image/png")
+
+## retrieve a creature through flask ##
+@app.route("/box/<creature>")
+def send_creature_box(creature):
+    return send_file('images/'+creature+'/box.png', mimetype="image/png")
+
+## retrieve a creature through flask ##
+@app.route("/creature/<creature>")
+def send_creature(creature):
+    return '''
+        <img src="{0}app/{1}" /> <br/>
+        <img src="{0}garden/{1}" /> <br/>
+        <img src="{0}box/{1}" />
+    '''.format(request.url_root, creature)
+
+## if main, run the flask app ##
 if __name__ == "__main__":
     app.run(threaded=True, host="0.0.0.0") # use host param for external visiblity
