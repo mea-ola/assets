@@ -15,8 +15,7 @@ def tile_box(name):
     tile_set(name,"box",64,64)
 
 def tile_set(name,folder,img_width,img_height):
-    # image size for app is 64 x 64
-    images = [Image.open(img_path,'r') for img_path in glob.glob("./images/"+name+"/"+folder+"/*.png")]
+    images = [Image.open(img_path,'r') for img_path in sorted(glob.glob("./images/"+name+"/"+folder+"/*.png"))]
     width = len(images) * img_width
     final_image = Image.new('RGBA', (width, img_height), (0,0,0,0))
     offset = (0,0)
