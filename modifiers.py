@@ -90,4 +90,4 @@ def mea_body_color(rgb):
 # hair color, takes a 4 tuple (rgba)
 def mea_hair_color(rgb):
     r,g,b = '0.'+str(rgb)[2:4], '0.'+str(rgb)[4:6], '0.'+str(rgb)[6:8]
-    bpy.data.materials['hair'].diffuse_ramp.elements[1].color = (float(r),float(g),float(b),1)
+    bpy.data.materials['hair'].diffuse_ramp.elements[0].color = (float(r),float(g),float(b),1)
