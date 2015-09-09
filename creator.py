@@ -55,7 +55,7 @@ def render_egg_garden(filepath):
     render_scene(filepath, [14,10], 2, NORMAL_ANGLE)
 
 def render_egg_app(filepath):
-    time_frame(0,500)
+    time_frame(30,76)
     render_scene(filepath, [14,10], 1, NORMAL_ANGLE)
 
 def render_creature_app(filepath, angle=NORMAL_ANGLE):
@@ -111,14 +111,13 @@ def make_random():
 ####################### APP #########################
 
 @app.route("/new")
-def random_creature():
+def send_random_creature():
     name = make_random()
     return send_file('images/'+name+'/app.png', mimetype="image/png")
 
-@app.route("/old")
-def static_creature():
-    return send_file('images/rando1441626731.2519984/app.png', mimetype="image/png")
+@app.route("/creature/<creature>")
+def send_creature(creature):
+    return send_file('images/'+creature+'/app.png', mimetype="image/png")
 
 if __name__ == "__main__":
     app.run(threaded=True, host="0.0.0.0") # use host param for external visiblity
-
