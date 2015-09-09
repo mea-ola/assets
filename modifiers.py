@@ -73,14 +73,13 @@ def mea_mouth(openness=0):
 def mea_smile(happyness=0):
     bpy.data.shape_keys["Key.006"].key_blocks["smile"].value = -1.5 + 2.5 * float(happyness)
 
-# hair, takes an array [mohawk, mess, normal, long] to combine them
-def mea_hair(hair_array):
-    h0, h1 = '0.'+str(hair_array)[2:4], '0.'+str(hair_array)[4:6]
-    h2, h3 = '0.'+str(hair_array)[6:8], '0.'+str(hair_array)[8:10]
-    bpy.data.objects['body'].modifiers["mohawk"].show_render = _to_bool(h0)
-    bpy.data.objects['body'].modifiers["mess"].show_render = _to_bool(h1)
-    bpy.data.objects['body'].modifiers["normal"].show_render = _to_bool(h2)
-    bpy.data.objects['body'].modifiers["long"].show_render = _to_bool(h3)
+# hair, takes an float, the hair type is 0 for type 0, 0.25 for type 1, etc... (for 5 hair types)
+def mea_hair(hair_type):
+    hair = int(float(hair_type * len(bpy.data.objects['body'].particle_systems) + 1));
+    index = 0
+    for h in bpy.data.objects['body'].particle_systems:
+        bpy.data.objects['body'].modifiers[h.name].show_render = hair == index
+        index = index + 1
 
 # body color, takes a 4 tuple (rgba)
 def mea_body_color(rgb):
