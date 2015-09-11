@@ -9,6 +9,7 @@ from makesprite import *
 
 from flask import Flask, send_file, request
 app = Flask(__name__, static_url_path='')
+app.hold = False
 
 NORMAL_ANGLE = (-0.40227848291397095, 0.16484859585762024, 6.682433605194092)
 DEG_0_ANGLE = (-0.7853982448577881, -0.0, 0.0)
@@ -103,8 +104,12 @@ def make_random():
 ## make a new random creature through flask ##
 @app.route("/new")
 def send_random_creature():
-    name = make_random()
-    return send_creature(name)
+    if app.hold == False:
+        app.hold = True
+        name = make_random()
+        app.hold = False
+        return send_creature(name)
+
 
 ## retrieve a creature through flask ##
 @app.route("/app/<creature>")

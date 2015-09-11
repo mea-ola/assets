@@ -73,13 +73,12 @@ def mea_mouth(openness=0):
 def mea_smile(happyness=0):
     bpy.data.shape_keys["Key.006"].key_blocks["smile"].value = -1.5 + 2.5 * float(happyness)
 
-# hair, takes an float, the hair type is 0 for type 0, 0.25 for type 1, etc... (for 5 hair types)
+# hair, takes an float, 0/5 - 1/5 is the first type, 1/5 - 2/5 is the second type
 def mea_hair(hair_type):
-    hair = int(float(hair_type * len(bpy.data.objects['body'].particle_systems) + 1));
-    index = 0
-    for h in bpy.data.objects['body'].particle_systems:
-        bpy.data.objects['body'].modifiers[h.name].show_render = hair == index
-        index = index + 1
+    particle_systems = bpy.data.objects['body'].particle_systems
+    hair = int(float(hair_type * (len(particle_systems) + 1)))
+    for h in range(len(particle_systems)):
+        bpy.data.objects['body'].modifiers[particle_systems[h].name].show_render = h == hair
 
 # body color, takes a 4 tuple (rgba)
 def mea_body_color(rgb):
