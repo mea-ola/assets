@@ -4,8 +4,13 @@ import json
 import random
 import os
 
+# Takes a string (of a float), and turns it into a bool
 def _to_bool(value):
     return float(value) > 0.5
+
+# Takes a string (of a float), and turns it into a number
+def _to_int(value, choices):
+    return int(float(value) * choices)
 
 def _json_to_hash(filepath):
     json_file = open(filepath, 'r')
@@ -76,16 +81,22 @@ def mea_smile(happyness=0):
 # hair, takes an float, 0/5 - 1/5 is the first type, 1/5 - 2/5 is the second type
 def mea_hair(hair_type):
     particle_systems = bpy.data.objects['body'].particle_systems
-    hair = int(float(hair_type * (len(particle_systems) + 1)))
+    hair = _to_int(hair_type, len(particle_systems) + 1)
     for h in range(len(particle_systems)):
         bpy.data.objects['body'].modifiers[particle_systems[h].name].show_render = h == hair
 
-# body color, takes a 4 tuple (rgba)
+# body color, takes a float / string
 def mea_body_color(rgb):
     r,g,b = '0.'+str(rgb)[2:4], '0.'+str(rgb)[4:6], '0.'+str(rgb)[6:8]
     bpy.data.materials['body'].diffuse_ramp.elements[1].color = (float(r),float(g),float(b),1)
 
-# hair color, takes a 4 tuple (rgba)
+# hair color, takes a float / string
 def mea_hair_color(rgb):
     r,g,b = '0.'+str(rgb)[2:4], '0.'+str(rgb)[4:6], '0.'+str(rgb)[6:8]
     bpy.data.materials['hair'].diffuse_ramp.elements[0].color = (float(r),float(g),float(b),1)
+
+# horn(s) for the creature, takes a float/ string
+def mea_horns(horns):
+    horn = _to_int(horns, 4) # 0, 1, 2, or 3 horns
+    for i in range(1,4):
+        bpy.data.objects["Horn" + str(i)].hide_render = i != horn
