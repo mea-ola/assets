@@ -12,20 +12,24 @@ def _to_bool(value):
 def _to_int(value, choices):
     return int(float(value) * choices)
 
+# Turns a json to a hash (python dict)
 def _json_to_hash(filepath):
     json_file = open(filepath, 'r')
     json_string = json_file.read()
     return json.loads(json_string)
 
+# Writes json to a file
 def _write_json(data, filepath):
     with open(filepath, 'w') as outfile:
         json.dump(data, outfile)
 
+# Modifies the current creature from a json file
 def modify_creature(filepath):
     creature_hash = _json_to_hash(filepath)
     for func_name in creature_hash:
         globals()[func_name](creature_hash[func_name])
 
+# Modifies the current creature using randoms
 def modify_creature_rand(name):
     functions = filter(lambda f: 'mea_' in f, globals())
     functions = filter(lambda f: 'mea_' in f, globals())
@@ -37,23 +41,29 @@ def modify_creature_rand(name):
         os.makedirs('images/')
     _write_json(creature_hash, 'images/' + name + '.json')
 
+############################# MODIFIERS ###################################
+## Any function in this file with the prefix "mea_" will get loaded as a
+## parameter for the creature, and will be saved to the json
+
 # eye colors
 def mea_eyes_type(type=0):
     bpy.data.materials['eye_color'].diffuse_color = (0,0,0) if _to_bool(type) else (1,1,1)
     bpy.data.materials['eye_pupil'].diffuse_color = (1,1,1) if _to_bool(type) else (0,0,0)
 
+# eye size
 def mea_eye_size(scale):
     bpy.data.objects['Armature'].pose.bones["pupil-control"].scale[0] = float(scale)
     bpy.data.objects['Armature'].pose.bones["pupil-control"].scale[1] = float(scale)
 
-# change hands and feet
+# change hands
 def mea_finger_hands(fingerRange):
     bpy.data.shape_keys["Key"].key_blocks["hand_transform"].value = float(fingerRange)
 
+# change feet
 def mea_flat_feet(flatRange):
     bpy.data.shape_keys["Key.001"].key_blocks["feet_transform"].value = float(flatRange)
 
-# ears
+# change ears
 def mea_pointed_ears(pointRange):
     bpy.data.shape_keys["Key.002"].key_blocks["Key 1"].value = -0.2 + 1.2 * float(pointRange)
 
@@ -66,7 +76,7 @@ def mea_surround_teeth(teeth=0):
 def mea_front_teeth(teeth=0):
     bpy.data.shape_keys["Key.006"].key_blocks["front-teeth"].value = -1 if _to_bool(teeth) else 1
 
-# False no tongue, True tongue out
+# 0 no tongue, 1 tongue out
 def mea_tongue(tongue_out=0):
     bpy.data.shape_keys["Key.006"].key_blocks["tongue"].value = -1 if _to_bool(tongue_out) else 0
 
@@ -78,7 +88,7 @@ def mea_mouth(openness=0):
 def mea_smile(happyness=0):
     bpy.data.shape_keys["Key.006"].key_blocks["smile"].value = -1.5 + 2.5 * float(happyness)
 
-# hair, takes an float, 0/5 - 1/5 is the first type, 1/5 - 2/5 is the second type
+# hair, chooses a hair_type based on the float
 def mea_hair(hair_type):
     particle_systems = bpy.data.objects['body'].particle_systems
     hair = _to_int(hair_type, len(particle_systems) + 1)

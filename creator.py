@@ -18,10 +18,6 @@ DEG_180_ANGLE = (-0.7853982448577881, -0.0, 3.141592502593994)
 DEG_270_ANGLE = (-0.7853982448577881, -0.0, 4.71238899230957)
 angles = [DEG_0_ANGLE,DEG_90_ANGLE,DEG_180_ANGLE,DEG_270_ANGLE]
 
-# eyes<bool>, eyesScale<float>, hands<float>, feet<float>,
-# ears<float>, teeth1<bool>, teeth2<bool>, tongue<bool>, mouth<float>,
-# smile<float>, hair1<bool>, hair2<bool>, hair3<bool>, hair4<bool>,
-# bodyColorR,G,B<float>, hairColorR,G,B<float>, name<string>
 def creature_creator(name):
 
     render_egg_box(name + "/box/egg")
@@ -38,6 +34,8 @@ def creature_creator(name):
     tile_box(name)
 
 ##################### RENDERING #####################
+# The box render is small and used for things like favicons and selecting from a huge
+#  list of creatures
 def render_creature_box(filepath):
     time_frame(0)
     render_scene(filepath, [0,10], 3, NORMAL_ANGLE)
@@ -46,6 +44,8 @@ def render_egg_box(filepath):
     time_frame(0)
     render_scene(filepath, [14,10], 3, NORMAL_ANGLE)
 
+# The garden render is medium size and used for things like movement around the screen
+# There are 4 walk cycles, each in a different direction
 def render_creature_garden(filepath, angle):
     time_frame(50,97)
     render_scene(filepath, [0,10], 2, angle)
@@ -54,6 +54,8 @@ def render_egg_garden(filepath):
     time_frame(0,42)
     render_scene(filepath, [14,10], 2, NORMAL_ANGLE)
 
+# The app render is large size and used for things like viewing one single creature
+# It is a rotation animation and does one blink
 def render_egg_app(filepath):
     time_frame(30,76)
     render_scene(filepath, [14,10], 1, NORMAL_ANGLE)
@@ -82,12 +84,14 @@ def render_scene(filepath, layers, image_size, angle, rotation=0, offset=0):
     bpy.context.scene.render.resolution_percentage = (100 * 3) / image_size
     change_angle(angle)
     visible_layers(layers) # layers for creature
-    bpy.context.scene.render.filepath = "//images/" + str(filepath) + ("b" if offset > 0 else "")
+    bpy.context.scene.render.filepath = "//images/" + str(filepath) + ("b" if offset < 0 else "")
     bpy.ops.render.render(animation=True)
 
+# change which layers are visible
 def visible_layers(vis):
     bpy.context.scene.layers = [i in vis for i in range(20)]
 
+# change the angle of the camera
 def change_angle(angle):
     bpy.data.objects['camera-control'].rotation_euler = Euler(angle,'XYZ')
 
@@ -104,12 +108,14 @@ def make_random():
 ## make a new random creature through flask ##
 @app.route("/new")
 def send_random_creature():
-    if app.hold == False:
-        app.hold = True
-        name = make_random()
-        app.hold = False
-        return send_creature(name)
+    name = make_random()
+    return send_creature(name)
 
+## make a new random creature though flask and only return the name ##
+@app.route("/new/name")
+def send_random_creature_name():
+    name = make_random()
+    return name
 
 ## retrieve a creature through flask ##
 @app.route("/app/<creature>")
@@ -133,6 +139,7 @@ def send_creature(creature):
         <img src="{0}app/{1}" /> <br/>
         <img src="{0}garden/{1}" /> <br/>
         <img src="{0}box/{1}" />
+        <div id="name"> {1} </div>
     '''.format(request.url_root, creature)
 
 ## if main, run the flask app ##
