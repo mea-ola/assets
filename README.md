@@ -1,16 +1,12 @@
 # assets
 Repo for assets
 
-Make sure you have the following things installed: blender (v2.74), PIL/ Pillow (python image library fork), and Flask (python web microframework). If running off of Windows, remove the python install that comes with blender or allow libraries to be pulled from the system python.
+Make sure you have the following things installed: blender (v2.77), PIL/ Pillow (python image library fork), and Flask (python web microframework). If running off of Windows, remove the python install that comes with blender or allow libraries to be pulled from the system python.
 
 ## Running it random
 ### _because I love rolling dice_
 
 `$ blender -b creatureGenerator.blend -y -P creator.py`
-
-Then hit the endpoint by opening a webbrowser and going to:
-
-`127.0.0.1:5000/new`
 
 This will generate json files in the images folder with the same name as the creature generated
 
